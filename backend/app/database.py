@@ -3,8 +3,9 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 
 DATABASE_URL = (
-    "postgresql://sonuajay@localhost/dronesentinel_db"
+    "postgresql://postgres:postgres@postgres:5432/dronesentinel_db"
 )
+
 
 engine = create_engine(DATABASE_URL)
 

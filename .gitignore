@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+backend/venv/
+
+# Environment
+.env
+backend/.env
+
+# Chroma
+backend/chroma_db/
+
+# Node
+frontend/node_modules/
+
+# VSCode
+.vscode/
+
+# Logs
+*.log

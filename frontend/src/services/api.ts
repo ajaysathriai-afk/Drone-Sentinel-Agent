@@ -17,7 +17,7 @@ export const fetchAlerts =
   async () => {
     const response =
       await fetch(
-        `${API_BASE_URL}/alerts`
+        `${API_BASE_URL}/alerts/`
       );
 
     return response.json();
@@ -27,7 +27,7 @@ export const fetchIncidents =
   async () => {
     const response =
       await fetch(
-        `${API_BASE_URL}/incidents`
+        `${API_BASE_URL}/incidents/`
       );
 
     return response.json();

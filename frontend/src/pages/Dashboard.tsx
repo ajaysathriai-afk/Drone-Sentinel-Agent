@@ -10,21 +10,15 @@ import ZoneAnalytics from "../components/ZoneAnalytics";
 
 export default function Dashboard() {
 
-  const [analysisResult, setAnalysisResult] =
-    useState<any>(null);
+  const [analysisResult, setAnalysisResult] = useState<any>(null);
 
-  const [refreshKey, setRefreshKey] =
-    useState(0);
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  const handleAnalysisComplete = (
-    result: any
-  ) => {
-
+  const handleAnalysisComplete = (result: any) => {
     setAnalysisResult(result);
 
-    // Refresh all dashboard widgets
-    setRefreshKey(prev => prev + 1);
-
+    // Force dashboard widgets to reload
+    setRefreshKey((prev) => prev + 1);
   };
 
   return (
@@ -40,18 +34,14 @@ export default function Dashboard() {
         </h1>
 
         <p className="text-slate-400 mt-2">
-          AI-powered surveillance,
-          incident monitoring and
-          threat investigation.
+          AI-powered surveillance, incident monitoring and threat investigation.
         </p>
 
       </div>
 
-      {/* Dashboard Stats */}
+      {/* Stats */}
 
-      <StatsCards
-        refreshKey={refreshKey}
-      />
+      <StatsCards key={`stats-${refreshKey}`} />
 
       {/* Workspace */}
 
@@ -62,9 +52,7 @@ export default function Dashboard() {
         <div className="space-y-6">
 
           <ImageUpload
-            onAnalysisComplete={
-              handleAnalysisComplete
-            }
+            onAnalysisComplete={handleAnalysisComplete}
           />
 
           <AIInvestigator />
@@ -79,9 +67,7 @@ export default function Dashboard() {
             result={analysisResult}
           />
 
-          <AlertFeed
-            refreshKey={refreshKey}
-          />
+          <AlertFeed key={`alerts-${refreshKey}`} />
 
         </div>
 
@@ -89,15 +75,11 @@ export default function Dashboard() {
 
       {/* Timeline */}
 
-      <IncidentTimeline
-        refreshKey={refreshKey}
-      />
+      <IncidentTimeline key={`timeline-${refreshKey}`} />
 
       {/* Analytics */}
 
-      <ZoneAnalytics
-        refreshKey={refreshKey}
-      />
+      <ZoneAnalytics key={`analytics-${refreshKey}`} />
 
     </div>
 

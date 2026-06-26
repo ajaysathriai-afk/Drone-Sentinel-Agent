@@ -1,130 +1,124 @@
 import { useEffect, useState } from "react";
 import { fetchIncidents } from "../services/api";
 
-export default function IncidentTimeline() {
-  const [incidents, setIncidents] = useState<any[]>([]);
+type Props = {
+  refreshKey: number;
+};
+
+type Incident = {
+  id: number;
+  timestamp: string;
+  event: string;
+};
+
+export default function IncidentTimeline({
+  refreshKey,
+}: Props) {
+
+  const [incidents, setIncidents] = useState<Incident[]>([]);
 
   useEffect(() => {
+
     fetchIncidents()
-      .then((data) => setIncidents(data.slice(-6).reverse()))
+      .then((data) => {
+
+        if (Array.isArray(data)) {
+
+          setIncidents(
+            data
+              .slice()
+              .reverse()
+          );
+
+        } else {
+
+          setIncidents([]);
+
+        }
+
+      })
       .catch(console.error);
-  }, []);
+
+  }, [refreshKey]);
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg">
 
-      {/* Header */}
+    <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
 
       <div className="flex items-center justify-between mb-6">
 
-        <div>
-          <h2 className="text-xl font-semibold text-white">
-            Activity Timeline
-          </h2>
+        <h2 className="text-xl font-semibold text-white">
+          📜 Incident Timeline
+        </h2>
 
-          <p className="text-sm text-slate-500 mt-1">
-            Latest surveillance events
-          </p>
-        </div>
-
-        <span className="px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs border border-blue-500/20">
-          {incidents.length} Events
+        <span className="text-xs uppercase text-slate-500">
+          {incidents.length} Records
         </span>
 
       </div>
 
-      {/* Timeline */}
-
       {incidents.length === 0 ? (
 
-        <div className="text-center py-16">
+        <div className="text-center py-10 text-slate-500">
 
           <div className="text-5xl mb-4">
             📭
           </div>
 
-          <p className="text-slate-500">
-            No incidents recorded
+          <p>
+            No incidents recorded yet.
           </p>
 
         </div>
 
       ) : (
 
-        <div className="space-y-5 max-h-[520px] overflow-y-auto pr-2">
+        <div className="space-y-4">
 
-          {incidents.map((incident, index) => {
+          {incidents.map((incident) => (
 
-            const event =
-              incident.event || "";
+            <div
+              key={incident.id}
+              className="
+                border-l-4
+                border-blue-500
+                pl-5
+                py-2
+              "
+            >
 
-            const color =
-              event.toLowerCase().includes("unauthorized")
-                ? "bg-red-500"
+              <div className="flex items-center justify-between">
 
-                : event.toLowerCase().includes("vehicle")
-                ? "bg-orange-500"
+                <h3 className="text-white font-medium">
 
-                : event.toLowerCase().includes("person")
-                ? "bg-blue-500"
+                  {incident.event}
 
-                : "bg-green-500";
+                </h3>
 
-            return (
+                <span className="text-xs text-slate-500">
 
-              <div
-                key={index}
-                className="flex gap-4"
-              >
+                  #{incident.id}
 
-                {/* Timeline */}
-
-                <div className="flex flex-col items-center">
-
-                  <div
-                    className={`w-3 h-3 rounded-full ${color}`}
-                  />
-
-                  {index !== incidents.length - 1 && (
-
-                    <div className="w-px flex-1 bg-slate-700 mt-2" />
-
-                  )}
-
-                </div>
-
-                {/* Card */}
-
-                <div className="flex-1 bg-slate-800 rounded-xl p-4 hover:bg-slate-700 transition">
-
-                  <div className="flex justify-between items-center mb-2">
-
-                    <span className="text-xs text-slate-500">
-                      {incident.timestamp}
-                    </span>
-
-                    <span className="text-[10px] uppercase tracking-wider text-slate-400">
-                      EVENT
-                    </span>
-
-                  </div>
-
-                  <p className="text-sm text-white leading-relaxed">
-                    {incident.event}
-                  </p>
-
-                </div>
+                </span>
 
               </div>
 
-            );
+              <p className="text-sm text-slate-400 mt-2">
 
-          })}
+                {incident.timestamp}
+
+              </p>
+
+            </div>
+
+          ))}
 
         </div>
 
       )}
 
     </div>
+
   );
+
 }

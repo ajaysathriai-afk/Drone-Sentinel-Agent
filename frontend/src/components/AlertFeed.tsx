@@ -1,90 +1,81 @@
 import { useEffect, useState } from "react";
 import { fetchAlerts } from "../services/api";
 
-const severityConfig: Record<
-  string,
-  {
-    color: string;
-    bg: string;
-    dot: string;
-  }
-> = {
-  CRITICAL: {
-    color: "text-red-400",
-    bg: "bg-red-500/10 border-red-500/20",
-    dot: "bg-red-500",
-  },
-
-  HIGH: {
-    color: "text-orange-400",
-    bg: "bg-orange-500/10 border-orange-500/20",
-    dot: "bg-orange-500",
-  },
-
-  MEDIUM: {
-    color: "text-yellow-400",
-    bg: "bg-yellow-500/10 border-yellow-500/20",
-    dot: "bg-yellow-500",
-  },
-
-  LOW: {
-    color: "text-green-400",
-    bg: "bg-green-500/10 border-green-500/20",
-    dot: "bg-green-500",
-  },
+type Props = {
+  refreshKey: number;
 };
 
-export default function AlertFeed() {
+type Alert = {
+  id: number;
+  severity: string;
+  message: string;
+};
 
-  const [alerts, setAlerts] =
-    useState<any[]>([]);
+export default function AlertFeed({
+  refreshKey,
+}: Props) {
+
+  const [alerts, setAlerts] = useState<Alert[]>([]);
 
   useEffect(() => {
 
     fetchAlerts()
-      .then(setAlerts)
+      .then((data) => {
+
+        if (Array.isArray(data)) {
+          setAlerts(data);
+        } else {
+          setAlerts([]);
+        }
+
+      })
       .catch(console.error);
 
-  }, []);
+  }, [refreshKey]);
+
+  const badgeColor = (severity: string) => {
+
+    switch (severity) {
+
+      case "HIGH":
+        return "bg-red-500/20 text-red-400 border-red-500/40";
+
+      case "MEDIUM":
+        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/40";
+
+      default:
+        return "bg-green-500/20 text-green-400 border-green-500/40";
+
+    }
+
+  };
 
   return (
 
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-lg">
-
-      {/* Header */}
+    <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
 
       <div className="flex items-center justify-between mb-6">
 
-        <div>
+        <h2 className="text-xl font-semibold text-white">
+          🚨 Live Alerts
+        </h2>
 
-          <h2 className="text-xl font-semibold text-white">
-            🚨 Live Alert Feed
-          </h2>
-
-          <p className="text-sm text-slate-500 mt-1">
-            Active security notifications
-          </p>
-
-        </div>
-
-        <span className="px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-xs">
-
+        <span className="text-xs text-slate-500 uppercase">
           {alerts.length} Active
-
         </span>
 
       </div>
 
       {alerts.length === 0 ? (
 
-        <div className="py-16 text-center">
+        <div className="text-center py-10 text-slate-500">
 
-          <div className="text-5xl mb-3">
-            ✅
+          <div className="text-5xl mb-4">
+            📭
           </div>
 
-          <p className="text-slate-500">
-            No active alerts
+          <p>
+            No alerts generated yet
           </p>
 
         </div>
@@ -93,67 +84,52 @@ export default function AlertFeed() {
 
         <div className="space-y-4">
 
-          {alerts.map((alert, index) => {
-
-            const cfg =
-              severityConfig[
-                alert.severity?.toUpperCase()
-              ] ??
-              severityConfig.LOW;
-
-            return (
+          {alerts
+            .slice()
+            .reverse()
+            .map((alert) => (
 
               <div
-                key={index}
-                className={`
-                  rounded-xl
+                key={alert.id}
+                className="
+                  bg-slate-800
+                  rounded-lg
                   border
-                  ${cfg.bg}
+                  border-slate-700
                   p-4
-                  hover:scale-[1.01]
-                  transition
-                `}
+                "
               >
 
                 <div className="flex justify-between items-start">
 
-                  <div className="flex gap-3">
-
-                    <div
-                      className={`w-3 h-3 rounded-full mt-2 ${cfg.dot}`}
-                    />
-
-                    <div>
-
-                      <div
-                        className={`font-semibold ${cfg.color}`}
-                      >
-                        {alert.severity}
-                      </div>
-
-                      <div className="text-slate-300 mt-1">
-
-                        {alert.message}
-
-                      </div>
-
-                    </div>
-
-                  </div>
+                  <span
+                    className={`
+                      px-3
+                      py-1
+                      rounded-full
+                      text-xs
+                      border
+                      ${badgeColor(alert.severity)}
+                    `}
+                  >
+                    {alert.severity}
+                  </span>
 
                   <span className="text-xs text-slate-500">
-
-                    LIVE
-
+                    Alert #{alert.id}
                   </span>
 
                 </div>
 
+                <p className="mt-3 text-slate-300">
+
+                  {alert.message}
+
+                </p>
+
               </div>
 
-            );
-
-          })}
+            ))}
 
         </div>
 

@@ -13,6 +13,20 @@ export default function Dashboard() {
   const [analysisResult, setAnalysisResult] =
     useState<any>(null);
 
+  const [refreshKey, setRefreshKey] =
+    useState(0);
+
+  const handleAnalysisComplete = (
+    result: any
+  ) => {
+
+    setAnalysisResult(result);
+
+    // Refresh all dashboard widgets
+    setRefreshKey(prev => prev + 1);
+
+  };
+
   return (
 
     <div className="space-y-8">
@@ -26,14 +40,18 @@ export default function Dashboard() {
         </h1>
 
         <p className="text-slate-400 mt-2">
-          AI-powered surveillance, incident monitoring and threat investigation.
+          AI-powered surveillance,
+          incident monitoring and
+          threat investigation.
         </p>
 
       </div>
 
-      {/* Stats */}
+      {/* Dashboard Stats */}
 
-      <StatsCards />
+      <StatsCards
+        refreshKey={refreshKey}
+      />
 
       {/* Workspace */}
 
@@ -44,7 +62,9 @@ export default function Dashboard() {
         <div className="space-y-6">
 
           <ImageUpload
-            onAnalysisComplete={setAnalysisResult}
+            onAnalysisComplete={
+              handleAnalysisComplete
+            }
           />
 
           <AIInvestigator />
@@ -59,7 +79,9 @@ export default function Dashboard() {
             result={analysisResult}
           />
 
-          <AlertFeed />
+          <AlertFeed
+            refreshKey={refreshKey}
+          />
 
         </div>
 
@@ -67,11 +89,15 @@ export default function Dashboard() {
 
       {/* Timeline */}
 
-      <IncidentTimeline />
+      <IncidentTimeline
+        refreshKey={refreshKey}
+      />
 
       {/* Analytics */}
 
-      <ZoneAnalytics />
+      <ZoneAnalytics
+        refreshKey={refreshKey}
+      />
 
     </div>
 

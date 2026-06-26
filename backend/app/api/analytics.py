@@ -9,21 +9,22 @@ router = APIRouter()
 
 
 @router.get("/")
-def get_zone_analytics(db: Session = Depends(get_db)):
+def get_zone_analytics(
+    db: Session = Depends(get_db)
+):
 
     results = (
         db.query(
             Incident.zone,
             func.count(Incident.id).label("count")
         )
-        .filter(Incident.zone != None)
         .group_by(Incident.zone)
         .all()
     )
 
     return [
         {
-            "zone": zone,
+            "zone": zone or "Unknown",
             "count": count,
         }
         for zone, count in results
@@ -31,39 +32,35 @@ def get_zone_analytics(db: Session = Depends(get_db)):
 
 
 @router.get("/stats")
-def get_stats(db: Session = Depends(get_db)):
+def get_stats(
+    db: Session = Depends(get_db)
+):
 
-    incident_count = db.query(
+    incidents = db.query(
         func.count(Incident.id)
-    ).scalar()
+    ).scalar() or 0
 
-    alert_count = db.query(
+    alerts = db.query(
         func.count(Alert.id)
-    ).scalar()
+    ).scalar() or 0
 
-    high = (
-        db.query(func.count(Incident.id))
-        .filter(
-            Incident.threat_level == "HIGH"
-        )
-        .scalar()
-    )
+    high = db.query(
+        func.count(Incident.id)
+    ).filter(
+        Incident.threat_level == "HIGH"
+    ).scalar() or 0
 
-    medium = (
-        db.query(func.count(Incident.id))
-        .filter(
-            Incident.threat_level == "MEDIUM"
-        )
-        .scalar()
-    )
+    medium = db.query(
+        func.count(Incident.id)
+    ).filter(
+        Incident.threat_level == "MEDIUM"
+    ).scalar() or 0
 
-    low = (
-        db.query(func.count(Incident.id))
-        .filter(
-            Incident.threat_level == "LOW"
-        )
-        .scalar()
-    )
+    low = db.query(
+        func.count(Incident.id)
+    ).filter(
+        Incident.threat_level == "LOW"
+    ).scalar() or 0
 
     zones = db.query(
         func.count(
@@ -71,7 +68,7 @@ def get_stats(db: Session = Depends(get_db)):
                 Incident.zone
             )
         )
-    ).scalar()
+    ).scalar() or 0
 
     latest = (
         db.query(
@@ -87,9 +84,11 @@ def get_stats(db: Session = Depends(get_db)):
 
     return {
 
-        "incidents": incident_count,
+        "incidents": incidents,
 
-        "alerts": alert_count,
+        "alerts": alerts,
+
+        "threat_level": threat,
 
         "high": high,
 
@@ -99,5 +98,4 @@ def get_stats(db: Session = Depends(get_db)):
 
         "zones": zones,
 
-        "threat_level": threat,
     }

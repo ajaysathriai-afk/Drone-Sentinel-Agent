@@ -30,7 +30,8 @@ async def analyze_image(
     result = graph.invoke(
         {
             "image_bytes": image_bytes,
-            "image_path": image_path
+            "image_path": image_path,
+            "image_name": file.filename
         }
     )
 

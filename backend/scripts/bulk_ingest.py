@@ -2,33 +2,30 @@ from pathlib import Path
 
 from app.agents.workflow import graph
 
-IMAGES_DIR = Path(
-    "data/images"
-)
+IMAGE_DIR = Path("data/images")
 
-images = sorted(
-    IMAGES_DIR.glob("*")
-)
+images = sorted(IMAGE_DIR.glob("*.jpg"))
 
-for image_path in images:
+print(f"\nFound {len(images)} images.\n")
 
-    print(
-        f"Processing {image_path.name}"
-    )
+for i, image_path in enumerate(images, start=1):
 
-    with open(
-        image_path,
-        "rb"
-    ) as f:
+    print(f"[{i}/{len(images)}] Processing {image_path.name}")
 
+    with open(image_path, "rb") as f:
         image_bytes = f.read()
 
-    state = {
-        "image_bytes": image_bytes
-    }
+    result = graph.invoke(
+        {
+            "image_path": str(image_path),
+            "image_bytes": image_bytes,
+            "image_name": image_path.name,
+        }
+    )
 
-    graph.invoke(state)
+    print(
+        f"✓ {result.get('threat_level', 'UNKNOWN')} "
+        f"- {result.get('alert_message', '')}"
+    )
 
-print(
-    f"\nProcessed {len(images)} images"
-)
+print("\nDone!")

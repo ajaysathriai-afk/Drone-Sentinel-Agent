@@ -37,3 +37,4 @@ tqdm==4.67.1
 PyYAML==6.0.2
 
 orjson==3.11.3
+langchain-chroma==1.0.0

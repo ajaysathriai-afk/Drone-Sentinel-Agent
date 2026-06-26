@@ -1,12 +1,12 @@
 const API_BASE_URL =
-  "http://127.0.0.1:8000";
+  "http://13.234.78.158:8000";
 
 export const searchIncidents =
   async (query: string) => {
 
     const response =
       await fetch(
-        `http://127.0.0.1:8000/search/?query=${query}`
+        `${API_BASE_URL}/search/?query=${query}`
       );
 
     return response.json();

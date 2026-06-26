@@ -64,25 +64,27 @@ export const fetchZoneAnalytics = async () => {
 };
 
 export const chatWithInvestigator =
-  async (query: string) => {
+  async (question: string) => {
 
     const response =
       await fetch(
-        "http://127.0.0.1:8000/chat/",
+        `${API_BASE_URL}/investigator/`,
         {
           method: "POST",
           headers: {
-            "Content-Type":
-              "application/json",
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            query,
+            question,
           }),
         }
       );
 
     return response.json();
   };
+
+
+
 
 export const fetchStats = async () => {
   const response = await fetch(`${API_BASE_URL}/analytics/stats`);

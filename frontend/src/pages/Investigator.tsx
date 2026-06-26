@@ -1,7 +1,9 @@
+import AIInvestigator from "../components/AIInvestigator";
+
 export default function Investigator() {
   return (
-    <div>
-      <h1>Investigator</h1>
+    <div className="p-6">
+      <AIInvestigator />
     </div>
   );
 }

@@ -5,114 +5,55 @@ type Props = {
   refreshKey: number;
 };
 
-type Stats = {
-  incidents: number;
-  alerts: number;
-  threat_level: string;
-  high: number;
-  medium: number;
-  low: number;
-  zones: number;
-};
-
 export default function StatsCards({
   refreshKey,
 }: Props) {
 
-  const [stats, setStats] = useState<Stats>({
+  const [stats, setStats] = useState({
     incidents: 0,
     alerts: 0,
     threat_level: "LOW",
-    high: 0,
-    medium: 0,
-    low: 0,
-    zones: 0,
   });
 
   useEffect(() => {
-
     fetchStats()
-      .then((data) => {
-
-        setStats({
-          incidents: data.incidents ?? 0,
-          alerts: data.alerts ?? 0,
-          threat_level: data.threat_level ?? "LOW",
-          high: data.high ?? 0,
-          medium: data.medium ?? 0,
-          low: data.low ?? 0,
-          zones: data.zones ?? 0,
-        });
-
-      })
+      .then(setStats)
       .catch(console.error);
-
   }, [refreshKey]);
 
-  const threatColor =
-    stats.threat_level === "CRITICAL"
-      ? "text-red-400"
-      : stats.threat_level === "HIGH"
-      ? "text-orange-400"
-      : stats.threat_level === "MEDIUM"
-      ? "text-yellow-400"
-      : "text-green-400";
-
   const cards = [
-
     {
-      title: "Incidents",
+      title: "Total Incidents",
       value: stats.incidents,
       icon: "📍",
       border: "border-blue-500/30",
       valueColor: "text-blue-400",
     },
-
     {
-      title: "Alerts",
+      title: "Active Alerts",
       value: stats.alerts,
       icon: "🚨",
       border: "border-red-500/30",
       valueColor: "text-red-400",
     },
-
     {
-      title: "High",
-      value: stats.high,
-      icon: "🔴",
-      border: "border-red-500/30",
-      valueColor: "text-red-400",
-    },
-
-    {
-      title: "Medium",
-      value: stats.medium,
-      icon: "🟠",
+      title: "Threat Level",
+      value: stats.threat_level,
+      icon: "🛡️",
       border: "border-yellow-500/30",
-      valueColor: "text-yellow-400",
+      valueColor:
+        stats.threat_level === "CRITICAL"
+          ? "text-red-500"
+          : stats.threat_level === "HIGH"
+          ? "text-orange-400"
+          : stats.threat_level === "MEDIUM"
+          ? "text-yellow-400"
+          : "text-green-400",
     },
-
-    {
-      title: "Low",
-      value: stats.low,
-      icon: "🟢",
-      border: "border-green-500/30",
-      valueColor: "text-green-400",
-    },
-
-    {
-      title: "Zones",
-      value: stats.zones,
-      icon: "🛰️",
-      border: "border-cyan-500/30",
-      valueColor: "text-cyan-400",
-    },
-
   ];
 
   return (
-
-    <div className="grid grid-cols-2 xl:grid-cols-6 gap-5">
+    <div className="grid md:grid-cols-3 gap-5">
 
       {cards.map((card) => (
 
@@ -123,29 +64,29 @@ export default function StatsCards({
             border
             ${card.border}
             rounded-xl
-            p-5
+            p-6
             transition
             hover:border-blue-500
           `}
         >
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-5">
 
             <div className="text-3xl">
               {card.icon}
             </div>
 
-            <span className="text-xs text-slate-500 uppercase">
+            <span className="text-xs uppercase tracking-wider text-slate-500">
               LIVE
             </span>
 
           </div>
 
-          <p className="mt-5 text-slate-400 text-sm">
+          <p className="text-slate-400 text-sm">
             {card.title}
           </p>
 
-          <h2 className={`text-3xl font-bold mt-2 ${card.valueColor}`}>
+          <h2 className={`text-4xl font-bold mt-2 ${card.valueColor}`}>
             {card.value}
           </h2>
 
@@ -154,7 +95,5 @@ export default function StatsCards({
       ))}
 
     </div>
-
   );
-
 }

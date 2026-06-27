@@ -26,12 +26,18 @@ app.add_middleware(
         "http://localhost:5174",
         "http://127.0.0.1:5173",
         "http://127.0.0.1:5174",
+
+        # EC2 frontend (optional)
+        "http://13.234.78.158",
+
+        # S3 Static Website
+        "http://dronesentinel-agent-ajay.s3-website.ap-south-1.amazonaws.com",
+        "http://dronesentinel-agent-ajay.s3-website-ap-south-1.amazonaws.com",
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 
 app.include_router(

@@ -1,1108 +1,320 @@
 # 🚁 DroneSentinel Agent
 
-> **AI-Powered Drone Surveillance & Threat Intelligence Platform**
+**AI-Powered Drone Surveillance & Threat Intelligence Platform**
 
-DroneSentinel Agent is an end-to-end AI surveillance platform that combines **Computer Vision**, **Generative AI**, and **Cloud Computing** to analyze drone surveillance imagery, detect threats, store incidents, generate analytics, and provide an AI-powered investigation assistant.
+DroneSentinel Agent is an end-to-end AI surveillance platform that combines Computer Vision, Generative AI, and Cloud Computing to analyze drone surveillance imagery, detect threats, store incidents, generate analytics, and provide an AI-powered investigation assistant.
 
-The platform leverages **YOLOv8** for object detection, **Google Gemini Vision** for scene understanding, **FastAPI** for backend services, **PostgreSQL** for persistent storage, and **React + TypeScript** for an interactive dashboard. The application is fully containerized using **Docker** and deployed on **AWS EC2** and **Amazon S3 Static Website Hosting**.
+Built with **YOLOv8** for object detection, **Google Gemini Vision** for scene understanding, **LangGraph** for agentic AI workflows, **FastAPI** for backend services, **PostgreSQL** for persistent storage, and **React + TypeScript** for an interactive real-time dashboard — fully containerized with Docker and deployed on AWS.
 
 ---
 
-# 🌐 Live Demo
+## 🚀 Live Demo
 
 | Service | URL |
 |---------|-----|
-| 🚀 Frontend | http://dronesentinel-agent-ajay.s3-website.ap-south-1.amazonaws.com |
-| 📘 Backend API | http://13.234.78.158:8000/docs |
-| 🔗 Backend Base URL | http://13.234.78.158:8000 |
+| Frontend | http://dronesentinel-agent-ajay.s3-website-ap-south-1.amazonaws.com |
+| Backend API | http://13.234.78.158:8000/docs |
 
 ---
 
-# 📖 Table of Contents
+## 📸 Screenshots
 
-- Overview
-- Features
-- Technology Stack
-- System Architecture
-- AI Workflow
-- Project Structure
-- Database Schema
-- API Endpoints
-- Installation
-- Docker Deployment
-- AWS Deployment
-- Screenshots
-- Future Enhancements
-- Project Highlights
-- Author
+### Dashboard — Live Monitoring Command Center
+![Dashboard](screenshots/dashboard.png)
 
----
+### AI Intelligence Report — Real-Time Threat Analysis
+![Analysis](screenshots/analysis.png)
 
-# 🚀 Overview
+### AI Security Investigator — Natural Language Investigation
+![Investigator](screenshots/investigator.png)
 
-DroneSentinel Agent is a production-ready AI surveillance platform that enables users to upload drone surveillance images, automatically detect objects using **YOLOv8**, generate intelligent scene understanding using **Google Gemini Vision**, classify threats, store surveillance incidents, visualize historical analytics, and investigate incidents using an **LLM-powered AI Investigator**.
+### Incident Timeline — Historical Activity Log
+![Timeline](screenshots/timeline.png)
 
-The project demonstrates an end-to-end AI pipeline from image ingestion to cloud deployment.
+### Zone Analytics — Incident Distribution by Surveillance Zone
+![Zone Analytics](screenshots/zone-analytics.png)
 
 ---
 
-# ✨ Features
+## ✨ Features
 
-## 🤖 AI Drone Image Analysis
+### 🤖 AI Drone Image Analysis
+- Upload drone surveillance images via drag & drop
+- YOLOv8 real-time object detection (people, vehicles, aircraft)
+- Google Gemini Vision for scene understanding and AI summaries
+- Automatic threat assessment — LOW / MEDIUM / HIGH / CRITICAL
+- AI-generated intelligence report with recommendations
+- Automatic incident and alert storage to PostgreSQL
 
-- Upload drone surveillance images
-- YOLOv8 object detection
-- AI-powered scene understanding
-- Automatic threat assessment
-- AI-generated surveillance summary
-- Zone detection
-- Threat classification
-- Automatic incident logging
+### 🛡️ Threat Intelligence Dashboard
+- Live total incidents, active alerts, and threat level indicators
+- Real-time alert feed with severity color coding
+- Incident timeline with event descriptions and timestamps
+- Zone distribution analytics with pie chart visualization
+- Dashboard auto-refreshes after every image upload — no manual refresh needed
 
----
+### 🤖 AI Security Investigator
+Ask natural language questions about surveillance data:
+- *Latest incident*
+- *Show recent incidents*
+- *How many incidents?*
+- *Any high threat events?*
+- *Which zone has the most activity?*
 
-## 📊 Interactive Dashboard
+Powered by Google Gemini LLM with direct PostgreSQL access via a LangGraph agentic workflow.
 
-- Total Incidents
-- Active Alerts
-- Threat Level
-- AI Status
-- Incident Timeline
-- Zone Analytics
-- Live Dashboard Statistics
-
----
-
-## 🤖 AI Security Investigator
-
-Ask natural language questions like:
-
-- Show the latest incident
-- How many incidents occurred?
-- Any HIGH threat incidents?
-- Show incidents in the Loading Dock
-- What happened yesterday?
-- Summarize surveillance history
-
-Powered by **Google Gemini LLM**.
+### ☁️ Cloud Deployment
+- Frontend on Amazon S3 static website hosting
+- Backend on AWS EC2 with Docker Compose orchestration
+- PostgreSQL running inside Docker
+- Publicly accessible REST API with Swagger documentation
 
 ---
 
-## 📈 Incident Analytics
-
-- Historical Timeline
-- Zone Distribution
-- Threat Level Statistics
-- Incident Summaries
-- Alert History
-
----
-
-## ☁ Cloud Deployment
-
-- AWS EC2 Backend
-- Amazon S3 Static Website Hosting
-- Docker Compose
-- PostgreSQL
-- FastAPI REST APIs
-
----
-
-# 🛠 Technology Stack
-
-## Frontend
-
-- React
-- TypeScript
-- Vite
-- Tailwind CSS
-- Recharts
-- React Dropzone
-
----
-
-## Backend
-
-- FastAPI
-- SQLAlchemy
-- PostgreSQL
-- Pydantic
-- Uvicorn
-
----
-
-## Artificial Intelligence
-
-- YOLOv8
-- Google Gemini Vision
-- Gemini LLM
-- Prompt Engineering
-
----
-
-## DevOps
-
-- Docker
-- Docker Compose
-- AWS EC2
-- Amazon S3
-- Git
-- GitHub
-
----
-
-# 🏗 High-Level System Architecture
+## 🏗️ System Architecture
 
 ```mermaid
 flowchart LR
-
-    U[User]
-
-    F[React Dashboard]
-
-    API[FastAPI Backend]
-
-    YOLO[YOLOv8 Detection]
-
-    GEMINI[Gemini Vision]
-
-    THREAT[Threat Assessment]
-
-    DB[(PostgreSQL)]
-
-    INVESTIGATOR[AI Investigator]
-
-    LLM[Gemini LLM]
-
-    U --> F
-
-    F --> API
-
-    API --> YOLO
-
-    YOLO --> GEMINI
-
-    GEMINI --> THREAT
-
-    THREAT --> DB
-
-    DB --> F
-
-    DB --> INVESTIGATOR
-
-    INVESTIGATOR --> LLM
-
-    LLM --> F
+    A[User] --> B[React Dashboard]
+    B --> C[FastAPI Backend]
+    C --> D[YOLOv8 Detection]
+    D --> E[Gemini Vision]
+    E --> F[Threat Assessment]
+    F --> G[(PostgreSQL)]
+    G --> H[Analytics Dashboard]
+    G --> I[AI Investigator]
+    I --> J[Gemini LLM]
+    J --> A
 ```
 
 ---
 
-# 🏛 Production Architecture
-
-```mermaid
-flowchart TB
-
-subgraph User
-
-Browser
-
-end
-
-subgraph Frontend
-
-React
-
-Dashboard
-
-ImageUpload
-
-AIInvestigator
-
-Analytics
-
-end
-
-subgraph Backend
-
-FastAPI
-
-AnalyzeAPI
-
-IncidentAPI
-
-AnalyticsAPI
-
-AlertAPI
-
-InvestigatorAPI
-
-end
-
-subgraph AI
-
-YOLOv8
-
-GeminiVision
-
-GeminiLLM
-
-end
-
-subgraph Database
-
-PostgreSQL
-
-Incidents
-
-Alerts
-
-end
-
-Browser --> React
-
-React --> AnalyzeAPI
-
-React --> IncidentAPI
-
-React --> AnalyticsAPI
-
-React --> AlertAPI
-
-React --> InvestigatorAPI
-
-AnalyzeAPI --> YOLOv8
-
-YOLOv8 --> GeminiVision
-
-GeminiVision --> PostgreSQL
-
-IncidentAPI --> PostgreSQL
-
-AnalyticsAPI --> PostgreSQL
-
-AlertAPI --> PostgreSQL
-
-InvestigatorAPI --> GeminiLLM
-
-GeminiLLM --> PostgreSQL
-
-PostgreSQL --> React
-```
-
----
-# 🤖 AI Image Analysis Workflow
+## ☁️ AWS Deployment Architecture
 
 ```mermaid
 flowchart LR
-
-A["Drone Image Upload"]
-B["YOLOv8 Object Detection"]
-C["Detected Objects"]
-D["Gemini Vision Analysis"]
-E["Threat Assessment"]
-F["Store Incident"]
-G["Dashboard Analytics"]
-
-A --> B
-B --> C
-C --> D
-D --> E
-E --> F
-F --> G
+    A[User] --> B[Amazon S3]
+    B --> C[React Frontend]
+    C --> D[AWS EC2]
+    D --> E[Docker Compose]
+    E --> F[FastAPI]
+    F --> G[(PostgreSQL)]
+    F --> H[Gemini API]
+    F --> I[YOLOv8]
 ```
 
 ---
 
-# 🧠 AI Investigator Workflow
-
-```mermaid
-sequenceDiagram
-
-actor User
-
-participant Frontend
-
-participant Backend
-
-participant PostgreSQL
-
-participant Gemini
-
-User->>Frontend: Ask Question
-
-Frontend->>Backend: POST /investigator
-
-Backend->>PostgreSQL: Retrieve Incident History
-
-PostgreSQL-->>Backend: Historical Incidents
-
-Backend->>Gemini: Build Prompt
-
-Gemini-->>Backend: AI Response
-
-Backend-->>Frontend: Natural Language Answer
-```
-
----
-
-# 🔄 Complete Processing Pipeline
+## 🔄 AI Image Analysis Workflow
 
 ```mermaid
 flowchart TD
-
-A["Upload Image"]
-
-B["FastAPI"]
-
-C["YOLOv8 Detection"]
-
-D["Gemini Vision"]
-
-E["Threat Classification"]
-
-F["Save to PostgreSQL"]
-
-G["Update Dashboard"]
-
-H["AI Investigator"]
-
-A --> B
-
-B --> C
-
-C --> D
-
-D --> E
-
-E --> F
-
-F --> G
-
-F --> H
+    A[Drone Image] --> B[Image Upload]
+    B --> C[YOLOv8 Detection]
+    C --> D[Detected Objects]
+    D --> E[Gemini Vision]
+    E --> F[Threat Classification]
+    F --> G[Store Incident]
+    G --> H[Dashboard Update]
 ```
 
 ---
 
-# 📂 Project Structure
+## 🤖 LangGraph Agentic Investigation Workflow
+
+```mermaid
+flowchart TD
+    A[Natural Language Query] --> B[LangGraph Agent]
+    B --> C[Query PostgreSQL]
+    C --> D[Retrieve Incidents]
+    D --> E[Gemini LLM]
+    E --> F[Structured Response]
+    F --> G[Dashboard Display]
+```
+
+---
+
+## 📈 End-to-End Application Flow
+
+```mermaid
+flowchart TD
+    A[Upload Image] --> B[YOLO Detection]
+    B --> C[Gemini Analysis]
+    C --> D[Threat Assessment]
+    D --> E[Save Incident]
+    E --> F[Dashboard Analytics]
+    F --> G[AI Investigator]
+    G --> H[Natural Language Answers]
+```
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technology |
+|-------|------------|
+| Frontend | React, TypeScript, Vite, TailwindCSS, Recharts |
+| Backend | FastAPI, SQLAlchemy, Pydantic, Python |
+| Computer Vision | YOLOv8 (Ultralytics) |
+| Generative AI | Google Gemini Vision, Gemini LLM |
+| Agentic AI | LangGraph workflow |
+| Database | PostgreSQL |
+| Containerization | Docker, Docker Compose |
+| Cloud | AWS EC2, Amazon S3 |
+
+---
+
+## 🗄️ Database Schema
+
+### incidents
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | Integer | Primary key |
+| timestamp | String | Incident datetime |
+| event | String | Alert message |
+| zone | String | Surveillance zone |
+| threat_level | String | LOW / MEDIUM / HIGH / CRITICAL |
+
+### alerts
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | Integer | Primary key |
+| severity | String | Alert severity level |
+| message | String | Alert description |
+
+---
+
+## 📂 Project Structure
 
 ```text
-DroneSentinel-Agent
+DroneSentinel-Agent/
 │
-├── backend
-│   │
-│   ├── app
-│   │   │
-│   │   ├── agents
-│   │   │   ├── workflow.py
-│   │   │   ├── nodes.py
-│   │   │   └── investigator.py
-│   │   │
-│   │   ├── api
-│   │   │   ├── analyze.py
-│   │   │   ├── analytics.py
-│   │   │   ├── alerts.py
-│   │   │   ├── incidents.py
-│   │   │   ├── investigator.py
-│   │   │   └── search.py
-│   │   │
-│   │   ├── services
-│   │   │   ├── vision_service.py
-│   │   │   └── yolo_service.py
-│   │   │
-│   │   ├── vectorstore
-│   │   │
-│   │   ├── database.py
-│   │   ├── models.py
-│   │   └── main.py
-│   │
-│   └── Dockerfile
+├── backend/
+│   └── app/
+│       ├── api/
+│       │   ├── analyze.py
+│       │   ├── alerts.py
+│       │   ├── incidents.py
+│       │   ├── analytics.py
+│       │   ├── chat.py
+│       │   └── search.py
+│       ├── agents/
+│       │   ├── nodes.py
+│       │   ├── state.py
+│       │   ├── workflow.py
+│       │   └── investigator.py
+│       ├── services/
+│       │   ├── vision_service.py
+│       │   └── yolo_service.py
+│       ├── models.py
+│       ├── database.py
+│       └── main.py
 │
-├── frontend
-│   │
-│   ├── src
-│   │   ├── components
-│   │   ├── pages
-│   │   ├── layouts
-│   │   ├── hooks
-│   │   ├── services
-│   │   └── types
-│   │
-│   └── Dockerfile
+├── frontend/
+│   └── src/
+│       ├── components/
+│       │   ├── StatsCards.tsx
+│       │   ├── ImageUpload.tsx
+│       │   ├── AnalysisResult.tsx
+│       │   ├── AlertFeed.tsx
+│       │   ├── IncidentTimeline.tsx
+│       │   ├── ZoneAnalytics.tsx
+│       │   ├── AIInvestigator.tsx
+│       │   └── Sidebar.tsx
+│       ├── pages/
+│       │   ├── Dashboard.tsx
+│       │   ├── Incidents.tsx
+│       │   └── Investigator.tsx
+│       ├── layouts/
+│       └── services/
+│           └── api.ts
 │
+├── screenshots/
 ├── docker-compose.yml
-├── README.md
 ├── requirements.txt
-└── .gitignore
+└── README.md
 ```
 
 ---
 
-# 🗄 Database Schema
+## 🚀 Local Installation
 
-## incidents
-
-| Column | Type | Description |
-|---------|------|-------------|
-| id | Integer | Primary Key |
-| image_name | String | Uploaded image |
-| timestamp | String | Detection timestamp |
-| event | Text | AI generated alert |
-| detected_objects | Text | Objects detected |
-| threat_level | String | LOW / MEDIUM / HIGH |
-| zone | String | Detection zone |
-
----
-
-## alerts
-
-| Column | Type | Description |
-|---------|------|-------------|
-| id | Integer | Primary Key |
-| severity | String | Alert severity |
-| message | Text | Alert message |
-
----
-
-# 🔌 REST API Endpoints
-
-## Image Analysis
-
-| Method | Endpoint | Description |
-|---------|----------|-------------|
-| POST | `/analyze` | Analyze uploaded drone image |
-
----
-
-## Dashboard
-
-| Method | Endpoint | Description |
-|---------|----------|-------------|
-| GET | `/analytics/` | Zone analytics |
-| GET | `/analytics/stats` | Dashboard statistics |
-
----
-
-## Incidents
-
-| Method | Endpoint | Description |
-|---------|----------|-------------|
-| GET | `/incidents/` | Retrieve all incidents |
-
----
-
-## Alerts
-
-| Method | Endpoint | Description |
-|---------|----------|-------------|
-| GET | `/alerts/` | Retrieve all alerts |
-
----
-
-## AI Investigator
-
-| Method | Endpoint | Description |
-|---------|----------|-------------|
-| POST | `/investigator/` | Natural language investigation |
-
----
-
-## Search
-
-| Method | Endpoint | Description |
-|---------|----------|-------------|
-| GET | `/search/` | Search historical incidents |
-
----
-
-# 📊 Dashboard Components
-
-The frontend dashboard consists of:
-
-- 📈 Stats Cards
-- 📡 Drone Image Upload
-- 🤖 AI Analysis Results
-- 🚨 Alert Feed
-- 📅 Incident Timeline
-- 📊 Zone Analytics
-- 🧠 AI Investigator
-
-All dashboard components fetch live data from the FastAPI backend using REST APIs and update automatically after image analysis.
-# 🚀 Installation
-
-## Prerequisites
-
-Before running the project, ensure the following software is installed:
-
-- Python 3.12+
-- Node.js 20+
-- Docker
-- Docker Compose
-- Git
-- PostgreSQL (optional if using Docker)
-
----
-
-# 📥 Clone Repository
-
+**Clone the repository:**
 ```bash
-git clone https://github.com/ajaysathriai-afk/Drone-Sentinel-Agent.git
-
-cd Drone-Sentinel-Agent
+git clone https://github.com/ajaysathriai-afk/DroneSentinel-Agent.git
+cd DroneSentinel-Agent
 ```
 
----
-
-# ⚙ Backend Setup
-
-Navigate to the backend.
-
+**Add environment variables:**
 ```bash
-cd backend
+cp .env.example .env
+# Edit .env and add your GEMINI_API_KEY and DATABASE_URL
 ```
 
-Create virtual environment.
-
+**Run with Docker:**
 ```bash
-python -m venv venv
+docker compose up --build
 ```
 
-Activate virtual environment.
-
-### Windows
-
-```bash
-venv\Scripts\activate
-```
-
-### Linux / Mac
-
-```bash
-source venv/bin/activate
-```
-
-Install dependencies.
-
-```bash
-pip install -r requirements.txt
-```
-
-Run backend.
-
-```bash
-uvicorn app.main:app --reload
-```
-
-Backend runs on
-
-```
-http://localhost:8000
-```
-
-Swagger API
-
-```
-http://localhost:8000/docs
-```
+**Access:**
+- Frontend: http://localhost
+- Backend API: http://localhost:8000/docs
 
 ---
 
-# 💻 Frontend Setup
+## ✅ Project Status
 
-Navigate to frontend.
-
-```bash
-cd frontend
-```
-
-Install packages.
-
-```bash
-npm install
-```
-
-Run development server.
-
-```bash
-npm run dev
-```
-
-Frontend runs on
-
-```
-http://localhost:5173
-```
+| Feature | Status |
+|---------|--------|
+| YOLOv8 Object Detection | ✅ Working |
+| Gemini Vision Analysis | ✅ Working |
+| Threat Assessment | ✅ Working |
+| PostgreSQL Persistence | ✅ Working |
+| Zone Analytics | ✅ Working |
+| AI Security Investigator | ✅ Working |
+| Docker Compose | ✅ Working |
+| AWS EC2 Deployment | ✅ Working |
+| Amazon S3 Frontend | ✅ Working |
+| Auto-refresh Dashboard | ✅ Working |
 
 ---
 
-# 🐳 Docker Deployment
+## 🔮 Future Enhancements
 
-Build containers.
-
-```bash
-docker compose build
-```
-
-Run services.
-
-```bash
-docker compose up -d
-```
-
-Stop services.
-
-```bash
-docker compose down
-```
-
-View logs.
-
-```bash
-docker compose logs -f
-```
+- Live RTSP drone video streaming
+- WebSocket real-time alerts
+- Face recognition and license plate detection
+- Geofencing with GPS coordinates
+- RAG-based knowledge search over incident history
+- CloudFront CDN for frontend
+- JWT authentication and RBAC
+- Email and SMS alerting
+- Kubernetes deployment
 
 ---
 
-# ☁ AWS Deployment
+## 🏆 Project Highlights
 
-## Backend
-
-The FastAPI backend is deployed on
-
-- AWS EC2
-- Docker
-- PostgreSQL Container
-
-Expose port
-
-```
-8000
-```
-
-Backend API
-
-```
-http://13.234.78.158:8000
-```
-
-Swagger
-
-```
-http://13.234.78.158:8000/docs
-```
+- End-to-end AI surveillance platform built from scratch
+- YOLOv8 computer vision for real-time object detection
+- Google Gemini Vision for scene understanding and threat classification
+- LangGraph agentic workflow for AI investigation
+- Natural language investigation assistant powered by Gemini LLM
+- Auto-refreshing React dashboard — updates after every image analysis
+- Zone and threat-level tracking with PostgreSQL
+- RESTful FastAPI backend with modular router architecture
+- Dockerized deployment on AWS EC2 with Amazon S3 frontend hosting
 
 ---
 
-## Frontend
+## 👨‍💻 Author
 
-The React frontend is hosted using
+**Ajay Kumar Sathri**
 
-- Amazon S3 Static Website Hosting
+MS in Computer Science — University of North Texas
 
-Frontend URL
+AI Engineer · Generative AI · Computer Vision · Full-Stack · Cloud
 
-```
-http://dronesentinel-agent-ajay.s3-website.ap-south-1.amazonaws.com
-```
-
----
-
-# 🔐 Environment Variables
-
-Create
-
-```
-backend/.env
-```
-
-Example
-
-```env
-GOOGLE_API_KEY=YOUR_GEMINI_API_KEY
-
-DATABASE_URL=postgresql://postgres:postgres@postgres:5432/dronesentinel_db
-```
-
----
-
-# 📸 Screenshots
-
-## Dashboard
-
-> Add dashboard screenshot here
-
----
-
-## Drone Image Upload
-
-> Add upload screen screenshot here
-
----
-
-## AI Analysis Result
-
-> Add AI analysis screenshot here
-
----
-
-## Incident Timeline
-
-> Add timeline screenshot here
-
----
-
-## Zone Analytics
-
-> Add analytics screenshot here
-
----
-
-## AI Investigator
-
-> Add AI Investigator screenshot here
-
----
-
-# 🔍 Example Workflow
-
-1. Upload drone surveillance image.
-
-2. YOLOv8 detects objects.
-
-3. Gemini Vision analyzes scene.
-
-4. Threat Assessment Engine determines risk.
-
-5. Incident is stored inside PostgreSQL.
-
-6. Dashboard automatically updates.
-
-7. AI Investigator can answer questions using historical incidents.
-
----
-
-# 📡 Sample API Usage
-
-## Analyze Image
-
-```bash
-curl -X POST \
--F "file=@drone_image.jpg" \
-http://13.234.78.158:8000/analyze
-```
-
----
-
-## Get Dashboard Statistics
-
-```bash
-curl http://13.234.78.158:8000/analytics/stats
-```
-
----
-
-## Get Incidents
-
-```bash
-curl http://13.234.78.158:8000/incidents/
-```
-
----
-
-## Get Alerts
-
-```bash
-curl http://13.234.78.158:8000/alerts/
-```
-
----
-
-## Ask AI Investigator
-
-```json
-POST /investigator
-
-{
-  "question":"Summarize all HIGH threat incidents."
-}
-```
-
----
-
-# 📈 Current Capabilities
-
-✅ Drone Image Upload
-
-✅ YOLOv8 Object Detection
-
-✅ Gemini Vision Analysis
-
-✅ Threat Classification
-
-✅ Automatic Incident Logging
-
-✅ Dashboard Analytics
-
-✅ AI Investigator
-
-✅ Docker Deployment
-
-✅ PostgreSQL Storage
-
-✅ AWS EC2 Deployment
-
-✅ Amazon S3 Frontend
-
----
-
-# ⚡ Performance
-
-- FastAPI asynchronous backend
-- Dockerized deployment
-- PostgreSQL persistent storage
-- Lightweight React frontend
-- REST API architecture
-- Cloud-ready deployment
-
----
-# 🔮 Future Enhancements
-
-The current version focuses on image-based AI surveillance. Future releases will expand the platform into a production-grade intelligent monitoring system.
-
-## Computer Vision
-
-- 🎥 Live RTSP Drone Video Streaming
-- 📹 Multi-Camera Monitoring
-- 😀 Face Recognition
-- 🚗 License Plate Recognition (ANPR)
-- 🚶 Human Activity Recognition
-- 🛰 Object Tracking Across Frames
-- 🔥 Fire & Smoke Detection
-- 🌊 Flood Detection
-- 🛑 Intrusion Detection
-- 🚨 Suspicious Activity Detection
-
----
-
-## Artificial Intelligence
-
-- Multi-Agent AI using LangGraph
-- Retrieval-Augmented Generation (RAG)
-- Long-Term Incident Memory
-- Semantic Search
-- Automatic Incident Summarization
-- AI Risk Prediction
-- Intelligent Patrol Recommendations
-
----
-
-## Dashboard
-
-- Real-Time Live Feed
-- Heat Maps
-- Interactive Map View
-- Geofencing
-- Custom Alert Rules
-- Incident Export
-- PDF Reports
-- CSV Export
-- Advanced Filters
-
----
-
-## Cloud
-
-- AWS ECS
-- Kubernetes
-- CloudFront CDN
-- Amazon ECR
-- CI/CD using GitHub Actions
-- Monitoring with Prometheus & Grafana
-
----
-
-## Security
-
-- JWT Authentication
-- OAuth Login
-- Role-Based Access Control (RBAC)
-- Audit Logs
-- API Rate Limiting
-
----
-
-# 💼 Resume Highlights
-
-This project demonstrates practical experience with:
-
-- End-to-End Full Stack Development
-- Computer Vision
-- Generative AI
-- Large Language Models (LLMs)
-- Prompt Engineering
-- REST API Development
-- PostgreSQL Database Design
-- Docker Containerization
-- Cloud Deployment on AWS
-- Production Debugging
-- AI Application Development
-
----
-
-# 🏆 Project Highlights
-
-- End-to-End AI Surveillance Platform
-- YOLOv8 Computer Vision
-- Google Gemini Vision Integration
-- AI Threat Assessment Engine
-- Natural Language AI Investigator
-- Interactive React Dashboard
-- PostgreSQL Analytics
-- FastAPI REST Backend
-- Dockerized Deployment
-- AWS EC2 Backend
-- Amazon S3 Static Website
-- Production-Ready Architecture
-
----
-
-# 📚 Learning Outcomes
-
-During this project, the following concepts were implemented:
-
-- FastAPI Backend Development
-- REST API Design
-- React Component Architecture
-- TypeScript Development
-- SQLAlchemy ORM
-- PostgreSQL Integration
-- Docker & Docker Compose
-- AWS EC2 Deployment
-- Amazon S3 Static Website Hosting
-- CORS Configuration
-- Computer Vision using YOLOv8
-- Google Gemini Vision API
-- LLM-powered AI Applications
-- Prompt Engineering
-- Cloud Deployment & Debugging
-
----
-
-# 🤝 Contributing
-
-Contributions are welcome.
-
-If you would like to improve DroneSentinel Agent:
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push your branch
-5. Open a Pull Request
-
----
-
-# 🐞 Known Limitations
-
-Current version supports:
-
-- Image-based surveillance only
-- Single image inference
-- Rule-based threat assessment
-- Manual image uploads
-
-Future releases will support:
-
-- Live video streams
-- Multi-camera monitoring
-- Advanced AI agents
-- Automated notifications
-- Real-time event processing
-
----
-
-# 📄 License
-
-This project is released under the **MIT License**.
-
----
-
-# ⭐ Support
-
-If you found this project useful, consider giving it a ⭐ on GitHub.
-
-It helps others discover the project and supports future development.
-
----
-
-# 👨‍💻 Author
-
-## Ajay Kumar Sathri
-
-**MS in Computer Science**
-
-University of North Texas
-
-### Areas of Interest
-
-- Artificial Intelligence
-- Generative AI
-- Agentic AI
-- Computer Vision
-- Large Language Models
-- Full Stack Development
-- Cloud Computing
-- MLOps
-
----
-
-## Connect
-
-GitHub
-
-https://github.com/ajaysathriai-afk
-
-LinkedIn
-
-> Add your LinkedIn profile URL here
-
-Portfolio
-
-> Add your portfolio website here
-
----
-
-# 🙏 Acknowledgements
-
-This project was built using the following technologies and communities:
-
-- FastAPI
-- React
-- TypeScript
-- YOLOv8
-- Google Gemini
-- PostgreSQL
-- Docker
-- AWS
-- SQLAlchemy
-- Tailwind CSS
-- Recharts
-
-Special thanks to the open-source community for providing the tools and frameworks that made this project possible.
-
----
-
-# 🚀 Final Thoughts
-
-DroneSentinel Agent demonstrates the integration of modern AI technologies with full-stack software engineering and cloud deployment practices. The project showcases how Computer Vision, Large Language Models, and scalable backend systems can be combined to build an intelligent surveillance platform capable of analyzing aerial imagery, tracking incidents, and assisting security personnel through natural language interaction.
-
-This project serves as a practical demonstration of production-ready AI application development, covering the complete lifecycle from model inference and backend APIs to cloud deployment and interactive dashboards.
-
----
-
-<div align="center">
-
-### ⭐ If you like this project, please consider giving it a star!
-
-Made with ❤️ using FastAPI, React, YOLOv8, Google Gemini, PostgreSQL, Docker, and AWS.
-
-</div>
+GitHub: [github.com/ajaysathriai-afk](https://github.com/ajaysathriai-afk)
